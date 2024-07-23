@@ -29,7 +29,10 @@ class _HomePageState extends State<HomePage> {
                 const CircularProgressIndicator()
               else
                 Expanded(
-                    child: SingleChildScrollView(child: _buildWeatherWidget())),
+                  child: SingleChildScrollView(
+                    child: _buildWeatherWidget(),
+                  ),
+                ),
             ],
           ),
         ),
@@ -38,8 +41,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildSearchWidget() {
-    return SearchBar(
-      hintText: "Cari Kota",
+    return TextField(
+      decoration: const InputDecoration(
+        hintText: "Cari Kota",
+        border: OutlineInputBorder(),
+      ),
       onSubmitted: (value) {
         _getWeatherData(value);
       },
@@ -128,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     _dataAndTitleWidget(
                         "UV", response?.current?.uv?.toString() ?? ""),
-                    _dataAndTitleWidget("Percipitation",
+                    _dataAndTitleWidget("Precipitation",
                         "${response?.current?.precipMm?.toString() ?? ""} mm")
                   ],
                 ),
@@ -177,13 +183,14 @@ class _HomePageState extends State<HomePage> {
   _getWeatherData(String location) async {
     setState(() {
       inProgress = true;
+      message = "Memuat cuaca...";
     });
 
     try {
       response = await WeatherApi().getCurrentWeather(location);
     } catch (e) {
       setState(() {
-        message = "Gagal memuat cuaca";
+        message = "Gagal memuat cuaca. Error: $e";
         response = null;
       });
     } finally {

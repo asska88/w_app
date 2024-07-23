@@ -13,10 +13,10 @@ class WeatherApi {
       if (response.statusCode == 200) {
         return ApiResponse.fromJson(jsonDecode(response.body));
       } else {
-        throw Exception("Gagal memuat cuaca");
+        throw Exception("Gagal memuat cuaca. Status code: ${response.statusCode}");
       }
     } catch (e) {
-      throw Exception("Gagal memuat cuaca");
+      throw Exception("Gagal memuat cuaca. Error: $e");
     }
   }
 }
